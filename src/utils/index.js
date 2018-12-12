@@ -57,12 +57,26 @@ const throttle = (func, wait, options) => {
   return throttled;
 }
 
+const clearCanvas = (ctx) => {
+  ctx.clearRect(0, 0, 99999, 99999)
+}
+
 const TOOLS = {
   RECT: '010101'
 }
 
+const delay = (timestamp) => {
+  return new Promise(res => {
+    setTimeout(() => {
+      res()
+    }, timestamp)
+  })
+}
+
 export default {
   getImageData,
-  throttle, 
+  throttle,
+  delay,
+  clearCanvas,
   TOOLS
 }

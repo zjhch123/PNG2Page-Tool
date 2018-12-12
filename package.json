@@ -73,6 +73,7 @@
     ]
   },
   "devDependencies": {
+    "harmony-reflect": "^1.6.1",
     "node-sass": "^4.10.0"
   }
 }

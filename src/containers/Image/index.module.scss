@@ -2,11 +2,19 @@
   width: 100%;
   height: 100%;
   border: 1px solid #d9d9d9;
-  overflow: auto;
   position: relative;
-  canvas {
-    position: relative;
-    width: 100%;
-    display: block;
+  display: flex;
+  overflow: hidden;
+  .mCanvas {
+    flex: 1;
+    overflow: auto;
+    .uCanvas {
+      position: relative;
+      width: 100%;
+      display: block;
+    }
+  }
+  .mAside {
+    width: 300px;
   }
 }
