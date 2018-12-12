@@ -1,0 +1,44 @@
+.cUpload {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  .mInputFile {
+    width: 100%;
+    height: 100%;
+    .mInputFileInner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .uIcon {
+      color: #40a9ff;
+    }
+    .uText1 {
+      font-size: 20px;
+      line-height: 26px;
+      color: rgba(0,0,0,.85);
+    }
+    .uText2 {
+      font-size: 16px;
+      line-height: 20px;
+      color: rgba(0,0,0,.45);
+    }
+  }
+  .mBorder {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed#d9d9d9;
+    transition: border-color .3s;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      border-color: #40a9ff;
+    }
+  }
+}
