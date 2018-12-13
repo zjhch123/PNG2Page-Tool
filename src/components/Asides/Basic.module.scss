@@ -1,0 +1,9 @@
+.mRow {
+  display: flex;
+  & > div {
+    width: 45%;
+  }
+  & > div + div {
+    margin-left: 8px;
+  }
+}

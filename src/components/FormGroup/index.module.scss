@@ -1,0 +1,10 @@
+.cFormGroup {
+  padding: 4px 0 12px;
+  &.fInline {
+    display: flex;
+    align-items: center;
+    & > p {
+      margin: 0;
+    }
+  }
+}

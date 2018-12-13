@@ -1,4 +1,12 @@
 .cAside {
   height: 100%;
   width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  .mBtns {
+    padding: 24px 0;
+    & > button + button {
+      margin: 8px 0;
+    }
+  }
 }

@@ -1,62 +1,73 @@
 import React from 'react'
+import { Select, Button } from 'antd'
+import FormGroup from '@components/FormGroup'
+import { Link, Image, Video, Basic } from '@components/Asides'
+
 import style from './index.module.scss'
 
-export default class Aside extends React.Component {
+const Option = Select.Option
+
+class Aside extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      type: 'link'
+    }
+
+    this.select = this.props.select || null
+  }
+
+  handlerTypeChange = (val) => {
+    this.setState({
+      type: val
+    })
+  }
+
+  handlerSave = (e) => {
+    console.log(e)
+    e.persist()
+    e.preventDefault()
+  }
+
   render() {
+    const {
+      type,
+    } = this.state
     return (
       <aside className={style.cAside}>
-        <form>
-          <div className={style.mFormGroup}>
-            <span className={style.uFormTlt}>类型</span>
-            <div className={style.mFormContent}>
-              <select>
-                <option>请选择类型</option>
-                <option>链接</option>
-                <option>视频</option>
-                <option>图片</option>
-              </select>
-            </div>
-          </div>
+        <form onSubmit={this.handlerSave}>
+          <Basic />
+          <FormGroup title='类型'>
+            <Select defaultValue="link" style={{ width: '100%' }} onChange={this.handlerTypeChange}>
+              <Option value="link">链接</Option>
+              <Option value="video">视频</Option>
+              <Option value="img">图片</Option>
+            </Select>
+          </FormGroup>
           <div className={style.mType}>
-            <p className={style.uTypeTlt}>链接类型</p>
-            <div className={style.mFormGroup}>
-              <span className={style.uFormTlt}>打开方式</span>
-              <div className={style.mFormContent}>
-                <label>
-                  <input type="radio" name="target" value='_blank'/>新窗口
-                </label>
-                <label>
-                  <input type="radio" name="target" value=''/>当前窗口
-                </label>
-              </div>
-            </div>
-            <div className={style.mFormGroup}>
-              <span className={style.uFormTlt}>跳转链接</span>
-              <div className={style.mFormContent}>
-                <input type="text" name="href" />
-              </div>
-            </div>
+            {
+              type === 'link' && <Link />
+            }
+            {
+              type === 'video' && <Video />
+            }
+            {
+              type === 'img' && <Image />
+            }
           </div>
-          <div className={style.mType}>
-            <p className={style.uTypeTlt}>视频类型</p>
-            <div className={style.mFormGroup}>
-              <span className={style.uFormTlt}>视频地址</span>
-              <div className={style.mFormContent}>
-                <input type="text" name="href" />
-              </div>
-            </div>
-          </div>
-          <div className={style.mType}>
-            <p className={style.uTypeTlt}>图片类型</p>
-            <div className={style.mFormGroup}>
-              <span className={style.uFormTlt}>图片地址</span>
-              <div className={style.mFormContent}>
-                <input type="text" name="href" />
-              </div>
-            </div>
+          <div className={style.mBtns}>
+            <Button type="danger" block>删除</Button>
+            <Button type="primary" htmlType="submit" block>
+              {
+                this.select == null ? '创建' : '保存'
+              }
+            </Button>
           </div>
         </form>
       </aside>
     )
   }
 }
+
+export default Aside

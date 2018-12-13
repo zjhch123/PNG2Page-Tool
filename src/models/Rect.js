@@ -52,7 +52,7 @@ class Rect {
   }
 }
 
-Rect.MIN_AREA = 100
+Rect.MIN_AREA = 1000
 
 Rect.LINE_WIDTH = 5
 
