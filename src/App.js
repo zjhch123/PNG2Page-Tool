@@ -5,6 +5,9 @@ import Container from '@components/Container';
 import Loading from '@components/Loading';
 import Upload from '@containers/Upload';
 import Image from '@containers/Image';
+import utils from '@utils/index';
+import local from '@utils/local';
+import { message } from 'antd';
 
 import './App.scss';
 
@@ -12,8 +15,17 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      file: null,
+      info: null,
       isLoading: false
+    }
+  }
+
+  componentDidMount() {
+    if (local.hasHistory()) {
+      const data = local.getImage()
+      this.setState({
+        info: data.imageInfo
+      })
     }
   }
 
@@ -28,11 +40,25 @@ class App extends Component {
     }, timestamp)
   }
 
-  uploadHandler = (file) => {
+  uploadHandler = async (file) => {
     this.setIsLoading()
+    const {
+      width, height, image
+    } = await utils.getImageData(file)
+    local.saveImage({ image: image.src, width, height })
     this.setState({
-      file,
+      info: {
+        width, height, image: image.src
+      }
     })
+  }
+
+  clearHistory = () => {
+    local.clearHistory()
+    message.success('清除成功！')
+    setTimeout(() => {
+      window.location.reload()
+    }, 500)
   }
 
   renderLoading = () => this.state.isLoading ? <Loading text="正在处理图像"/> : ''
@@ -41,12 +67,12 @@ class App extends Component {
     return (
       <div className="app">
       {/* { this.renderLoading() } */}
-        <Header />
+        <Header clearHistory={this.clearHistory}/>
         <Container className="app-container" padding="8px">
           {
-            !this.state.file
+            !this.state.info
               ? <Upload afterUpload={this.uploadHandler}/>
-              : <Image file={this.state.file} />
+              : <Image info={this.state.info} />
           }
         </Container>
         <Footer />

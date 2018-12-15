@@ -3,6 +3,7 @@ import style from './index.module.scss'
 import utils from '@utils/index'
 import Rect from '@models/Rect'
 import Aside from '@containers/Aside'
+import local from '@src/utils/local';
 
 export default class Image extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class Image extends React.Component {
       y: 0
     }
 
-    this.result = []
+    this.result = local.getData().data
 
     this.calcScale = utils.throttle(this.calcScale, 200)
     this.state = {
@@ -27,12 +28,10 @@ export default class Image extends React.Component {
   async componentDidMount() {
     this.ctx = this.canvas.getContext('2d')
 
-    const file = this.props.file
     const {
       width, height, image
-    } = await utils.getImageData(file)
+    } = this.props.info
 
-    this.image = image
     this.setState({ image })
     this.canvas.height = this.canvas.width / width * height
 
@@ -54,9 +53,13 @@ export default class Image extends React.Component {
   drawPrev = () => {
     utils.clearCanvas(this.ctx)
     this.result.sort((r1, r2) => r2.area - r1.area).forEach(r => r.draw(this.ctx))
+    local.saveData(this.result)
   }
 
   startDrawing = (e) => {
+    if (e.button && e.button === 2) { // 鼠标右键
+      return
+    }
     if (this.isDrawing) { return }
 
     this.isDrawing = true
@@ -159,11 +162,16 @@ export default class Image extends React.Component {
     this.drawPrev()
   }
 
+  handlerAsideDeleteAll = () => {
+    this.result = []
+    this.drawPrev()
+  }
+
   render() {
     return (
       <div className={style.cImage}>
         <div className={style.mCanvas}>
-          <img alt="canvas" src={!!this.state.image ? this.state.image.src : ''} className={style.uImg}/>
+          <img alt="canvas" src={!!this.state.image ? this.state.image : ''} className={style.uImg}/>
           <canvas 
             className={style.uCanvas}
             onClick={this.handlerClick}
@@ -178,6 +186,7 @@ export default class Image extends React.Component {
             ref={(node) => this.aside = node} 
             onSave={this.handlerAsideSave}
             onDelete={this.handlerAsideDelete}
+            onDeleteAll={this.handlerAsideDeleteAll}
             />
         </div>
       </div>

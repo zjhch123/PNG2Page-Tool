@@ -133,6 +133,32 @@ class Rect {
 
     return minX <= x && maxX >= x && minY <= y && maxY >= y
   }
+
+  stringify() {
+    const {
+      id,
+      x1, y1, x2, y2,
+      data,
+      type
+    } = this
+    return {
+      id,
+      x1, y1, x2, y2,
+      data: JSON.stringify(data),
+      type
+    }
+  }
+}
+
+Rect.parse = (json) => {
+  const {
+    id = -1,
+    x1, y1, x2, y2, 
+    selected = false, 
+    data = {}, 
+    type = window.p2pAppEdit.LINK
+  } = json
+  return new Rect({id, x1, x2, y1, y2, selected, data: JSON.parse(data || {}), type})
 }
 
 Rect.MIN_AREA = 1000
@@ -144,19 +170,19 @@ Rect.STROKE_COLOR = `rgba(95,189,249, 1)`
 Rect.TEXT_COLOR = `rgba(255, 255, 255, 1)`
 
 Rect.SELECT_FILL_COLOR = `rgba(215, 20, 69, .8)`
-Rect.SELECT_TEXT_COLOR = `rgba(255, 255, 255, 1)`
 Rect.SELECT_STROKE_COLOR = `rgba(215, 20, 69, 1)`
+Rect.SELECT_TEXT_COLOR = `rgba(255, 255, 255, 1)`
 
-Rect.VIDEO_FILL_COLOR = `rgba(255, 0, 0, .3)`
+Rect.VIDEO_FILL_COLOR = `rgba(104,11,171, .3)`
+Rect.VIDEO_STROKE_COLOR = `rgba(104,11,171, 1)`
 Rect.VIDEO_TEXT_COLOR = `rgba(255, 255, 255, 1)`
-Rect.VIDEO_STROKE_COLOR = `rgba(255, 0, 0, 1)`
 
-Rect.LINK_FILL_COLOR = `rgba(0, 255, 0, .3)`
+Rect.LINK_FILL_COLOR = `rgba(255,177,2, .3)`
+Rect.LINK_STROKE_COLOR = `rgba(255,177,2, 1)`
 Rect.LINK_TEXT_COLOR = `rgba(255, 255, 255, 1)`
-Rect.LINK_STROKE_COLOR = `rgba(0, 255, 0, 1)`
 
-Rect.IMAGE_FILL_COLOR = `rgba(0, 0, 255, .3)`
+Rect.IMAGE_FILL_COLOR = `rgba(120,231,2, .3)`
+Rect.IMAGE_STROKE_COLOR = `rgba(120,231,2, 1)`
 Rect.IMAGE_TEXT_COLOR = `rgba(255, 255, 255, 1)`
-Rect.IMAGE_STROKE_COLOR = `rgba(0, 0, 255, 1)`
 
 export default Rect

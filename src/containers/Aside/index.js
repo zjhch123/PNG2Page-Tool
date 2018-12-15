@@ -1,10 +1,11 @@
-import React from 'react'
-import { Select, Button, message } from 'antd'
-import FormGroup from '@components/FormGroup'
-import { Link, Image, Video, Basic } from '@containers/Asides'
-import utils from '@utils/index'
-import style from './index.module.scss'
+import React from 'react';
+import { Select, Button, message, Popconfirm } from 'antd';
+import FormGroup from '@components/FormGroup';
+import { Link, Image, Video, Basic } from '@containers/Asides';
 import Rect from '@models/Rect';
+import utils from '@utils/index';
+
+import style from './index.module.scss'
 
 const Option = Select.Option
 
@@ -104,6 +105,12 @@ class Aside extends React.Component {
     message.success('删除成功！')
   }
 
+  handlerDeleteAll = () => {
+    this.result = []
+    this.props.onDeleteAll()
+    message.success('删除成功！')
+  }
+
   render() {
     const {
       rect
@@ -145,6 +152,12 @@ class Aside extends React.Component {
                 rect.id === -1 ? '创建' : '保存'
               }
             </Button>
+          </div>
+
+          <div className={style.mDeleteAll}>
+            <Popconfirm placement="top" title="此操作不可逆, 确认执行？" onConfirm={this.handlerDeleteAll} okText="确认" cancelText="取消">
+              <Button type="danger" block>删除所有</Button>
+            </Popconfirm>
           </div>
         </form>
       </aside>

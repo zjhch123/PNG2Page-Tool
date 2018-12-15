@@ -23,29 +23,29 @@ const throttle = (func, wait, options) => {
   if (!options) options = {};
 
   var later = function() {
-      previous = options.leading === false ? 0 : new Date().getTime();
-      timeout = null;
-      func.apply(context, args);
-      if (!timeout) context = args = null;
+    previous = options.leading === false ? 0 : new Date().getTime();
+    timeout = null;
+    func.apply(context, args);
+    if (!timeout) context = args = null;
   };
 
   var throttled = function() {
-      var now = new Date().getTime();
-      if (!previous && options.leading === false) previous = now;
-      var remaining = wait - (now - previous);
-      context = this;
-      args = arguments;
-      if (remaining <= 0 || remaining > wait) {
-          if (timeout) {
-              clearTimeout(timeout);
-              timeout = null;
-          }
-          previous = now;
-          func.apply(context, args);
-          if (!timeout) context = args = null;
-      } else if (!timeout && options.trailing !== false) {
-          timeout = setTimeout(later, remaining);
+    var now = new Date().getTime();
+    if (!previous && options.leading === false) previous = now;
+    var remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
       }
+      previous = now;
+      func.apply(context, args);
+      if (!timeout) context = args = null;
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
   };
 
   throttled.cancel = function() {
@@ -59,10 +59,6 @@ const throttle = (func, wait, options) => {
 
 const clearCanvas = (ctx) => {
   ctx.clearRect(0, 0, 99999, 99999)
-}
-
-const TOOLS = {
-  RECT: '010101'
 }
 
 const delay = (timestamp) => {
@@ -100,5 +96,4 @@ export default {
   clearCanvas,
   getFormData,
   getRandomId,
-  TOOLS
 }

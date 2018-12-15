@@ -3,10 +3,18 @@
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
+  position: relative;
   .mBtns {
     padding: 24px 0;
     & > button + button {
       margin: 8px 0;
     }
+  }
+  .mDeleteAll {
+    position: absolute;
+    padding: 8px;
+    bottom: 12px;
+    left: 0;
+    right: 0;
   }
 }
