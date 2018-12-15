@@ -45,7 +45,12 @@ class App extends Component {
     const {
       width, height, image
     } = await utils.getImageData(file)
-    local.saveImage({ image: image.src, width, height })
+    try {
+      local.saveImage({ image: image.src, width, height })
+    } catch (e) {
+      message.error('图片过大, 请重新上传')
+      return
+    }
     this.setState({
       info: {
         width, height, image: image.src
