@@ -8,10 +8,20 @@
   .mCanvas {
     flex: 1;
     overflow: auto;
+    position: relative;
     .uCanvas {
       position: relative;
       width: 100%;
       display: block;
+      z-index: 2;
+    }
+    .uImg {
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      pointer-events: none;
     }
   }
   .mAside {

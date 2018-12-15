@@ -6,6 +6,7 @@ import App from './App';
 
 const locale = 'zh'
 window.p2pAppConfig = appConfig[locale]
+window.p2pAppEdit = appConfig['edit']
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

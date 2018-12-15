@@ -19,6 +19,9 @@ export default class Image extends React.Component {
     this.result = []
 
     this.calcScale = utils.throttle(this.calcScale, 200)
+    this.state = {
+      image: null
+    }
   }
 
   async componentDidMount() {
@@ -26,19 +29,18 @@ export default class Image extends React.Component {
 
     const file = this.props.file
     const {
-      height, image
+      width, height, image
     } = await utils.getImageData(file)
 
     this.image = image
-    this.canvas.height = height
-
-    utils
-      .delay(200)
-      .then(() => this.calcScale()) // 延迟执行保证计算正确
+    this.setState({ image })
+    this.canvas.height = this.canvas.width / width * height
 
     this.drawPrev()
-    
     window.addEventListener('resize', this.calcScale)
+
+    await utils.delay(200)
+    this.calcScale()
   }
 
   calcScale = () => {
@@ -50,10 +52,8 @@ export default class Image extends React.Component {
   }
 
   drawPrev = () => {
-    this.ctx.drawImage(this.image, 0, 0)
-    for (let i = 0; i < this.result.length; i++) {
-      this.result[i].draw(this.ctx)
-    }
+    utils.clearCanvas(this.ctx)
+    this.result.sort((r1, r2) => r2.area - r1.area).forEach(r => r.draw(this.ctx))
   }
 
   startDrawing = (e) => {
@@ -103,10 +103,14 @@ export default class Image extends React.Component {
       y1: this.mouse.y,
       x2: x2 * this.scale,
       y2: y2 * this.scale,
+      selected: true
     })
 
     if (rect.area >= Rect.MIN_AREA) {
       this.result.push(rect)
+      this.setSelected(rect)
+    } else {
+      this.setUnSelected()
     }
   }
 
@@ -121,16 +125,37 @@ export default class Image extends React.Component {
       y: y * this.scale
     }
 
-    const rects = 
-        this.result
-          .map(r => { r.selected = false; return r; })
-          .filter(rect => rect.isInner(scaled))
-          .sort((r1, r2) => r1.area - r2.area)
+    const rects = this.result
+            .map(r => { r.selected = false; return r; })
+            .filter(rect => rect.isInner(scaled))
+            .sort((r1, r2) => r1.area - r2.area)
     
     if (rects.length > 0) {
       rects[0].selected = true
+      this.setSelected(rects[0])
+    } else {
+      this.setUnSelected()
     }
 
+    this.drawPrev()
+  }
+
+  setSelected = (rect) => {
+    this.aside.setSelected(rect)
+  }
+
+  setUnSelected = () => {
+    this.aside.setUnSelected()
+  }
+  
+  handlerAsideSave = (rect) => {
+    this.result = this.result.filter(r => r.id !== rect.id)
+    this.result.push(rect)
+    this.drawPrev()
+  }
+
+  handlerAsideDelete = (id) => {
+    this.result = this.result.filter(r => r.id !== id)
     this.drawPrev()
   }
 
@@ -138,6 +163,7 @@ export default class Image extends React.Component {
     return (
       <div className={style.cImage}>
         <div className={style.mCanvas}>
+          <img alt="canvas" src={!!this.state.image ? this.state.image.src : ''} className={style.uImg}/>
           <canvas 
             className={style.uCanvas}
             onClick={this.handlerClick}
@@ -148,7 +174,11 @@ export default class Image extends React.Component {
             width="1920" />
         </div>
         <div className={style.mAside}>
-          <Aside />
+          <Aside 
+            ref={(node) => this.aside = node} 
+            onSave={this.handlerAsideSave}
+            onDelete={this.handlerAsideDelete}
+            />
         </div>
       </div>
     )

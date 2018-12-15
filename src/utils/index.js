@@ -73,10 +73,32 @@ const delay = (timestamp) => {
   })
 }
 
+const getFormData = (formDOM) => {
+  const data = {}
+  for (let i = 0; i < formDOM.length; i++) {
+    const dom = formDOM[i]
+    if (dom.type === 'submit' || dom.type === 'button') {
+      continue
+    } else if (dom.type === 'radio') {
+      if (dom.checked) {
+        data[dom.name] = dom.value
+      }
+    } else {
+      data[dom.name] = dom.value
+    }
+  }
+
+  return data
+}
+
+const getRandomId = () => Math.random().toString(36).substring(2)
+
 export default {
   getImageData,
   throttle,
   delay,
   clearCanvas,
+  getFormData,
+  getRandomId,
   TOOLS
 }

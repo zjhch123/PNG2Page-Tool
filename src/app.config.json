@@ -5,5 +5,10 @@
     "uploadTitle": "点击选择图片或将图片拖到此处。",
     "uploadDraggingTitle": "松开鼠标确认选择图片。",
     "uploadSubTitle": "已选择0张"
+  },
+  "edit": {
+    "LINK": "link",
+    "IMAGE": "img",
+    "VIDEO": "video"
   }
 }
