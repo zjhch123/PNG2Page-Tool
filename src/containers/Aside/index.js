@@ -154,10 +154,11 @@ class Aside extends React.Component {
             </Button>
           </div>
 
-          <div className={style.mDeleteAll}>
+          <div className={style.mManages}>
             <Popconfirm placement="top" title="此操作不可逆, 确认执行？" onConfirm={this.handlerDeleteAll} okText="确认" cancelText="取消">
               <Button type="danger" block>删除所有</Button>
             </Popconfirm>
+            <Button type="primary" onClick={this.props.onExport} block>导出HTML</Button>
           </div>
         </form>
       </aside>

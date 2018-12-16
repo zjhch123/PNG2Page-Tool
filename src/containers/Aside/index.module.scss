@@ -10,11 +10,14 @@
       margin: 8px 0;
     }
   }
-  .mDeleteAll {
+  .mManages {
     position: absolute;
     padding: 8px;
     bottom: 12px;
     left: 0;
     right: 0;
+    & > button + button {
+      margin: 8px 0;
+    }
   }
 }

@@ -3,7 +3,8 @@ import style from './index.module.scss'
 import utils from '@utils/index'
 import Rect from '@models/Rect'
 import Aside from '@containers/Aside'
-import local from '@src/utils/local';
+import local from '@utils/local'
+import transfer from '@utils/transfer'
 
 export default class Image extends React.Component {
   constructor(props) {
@@ -167,6 +168,10 @@ export default class Image extends React.Component {
     this.drawPrev()
   }
 
+  handlerAsideExport = () => {
+    transfer.toHTML(this.state.image, this.result.map(r => r.stringify()))
+  }
+
   render() {
     return (
       <div className={style.cImage}>
@@ -187,6 +192,7 @@ export default class Image extends React.Component {
             onSave={this.handlerAsideSave}
             onDelete={this.handlerAsideDelete}
             onDeleteAll={this.handlerAsideDeleteAll}
+            onExport={this.handlerAsideExport}
             />
         </div>
       </div>
