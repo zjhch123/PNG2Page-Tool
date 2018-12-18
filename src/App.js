@@ -22,6 +22,7 @@ class App extends Component {
 
   componentDidMount() {
     if (local.hasHistory()) {
+      this.setIsLoading()
       const data = local.getImage()
       this.setState({
         info: data.imageInfo
@@ -71,7 +72,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-      {/* { this.renderLoading() } */}
+      { this.renderLoading() }
         <Header clearHistory={this.clearHistory}/>
         <Container className="app-container" padding="8px">
           {
