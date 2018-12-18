@@ -18,7 +18,7 @@ const getImage = () => {
 }
 
 const saveData = (data = []) => {
-  storage.set("data", JSON.stringify(data.map(r => r.stringify())))
+  storage.set("data", JSON.stringify(data.map(r => r.toJSON())))
   storage.set('hasHistory', 1)
 }
 

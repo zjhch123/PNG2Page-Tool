@@ -1,3 +1,6 @@
+import JSZip from 'jszip'
+import saveAs from 'file-saver'
+import html from '@utils/getTemplate'
 
 const b64ToImgs = (b64, height = 600) => {
   return new Promise(res => {
@@ -33,20 +36,26 @@ const b64ToImgs = (b64, height = 600) => {
   })
 }
 
+const dataURLTob64 = (dataURL) => {
+  return dataURL.split(',')[1]
+}
+
 export default {
   async toHTML(b64, data) {
     const images = await b64ToImgs(b64)
 
-    document.body.innerHTML = ''
+    const htmlStr = window.template.render(html, { imageSize: images.length, data: data })
+    
+    const zip = new JSZip()
+    zip.file("index.html", htmlStr)
 
-    setTimeout(() => {
-      images.map(d => {
-        const i = document.createElement('img')
-        i.src = d
-        return i
-      }).forEach(img => {
-        document.body.append(img)
-      })
-    }, 2000)
+    images.forEach((image, index) => {
+      zip.file(`image${index}.jpg`, dataURLTob64(image), {base64: true})
+    })
+
+    zip.generateAsync({type: 'blob'})
+       .then(content => {
+         saveAs(content)
+       })
   }
 }

@@ -169,7 +169,7 @@ export default class Image extends React.Component {
   }
 
   handlerAsideExport = () => {
-    transfer.toHTML(this.state.image, this.result.map(r => r.stringify()))
+    transfer.toHTML(this.state.image, this.result.map(r => r.toJSON()))
   }
 
   render() {

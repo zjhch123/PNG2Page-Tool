@@ -134,17 +134,23 @@ class Rect {
     return minX <= x && maxX >= x && minY <= y && maxY >= y
   }
 
-  stringify() {
-    const {
+  toJSON() {
+    let {
       id,
       x1, y1, x2, y2,
       data,
       type
     } = this
+
+    let [_x1, _y1] = [Math.min(x1, x2), Math.min(y1, y2)];
+    let [_x2, _y2] = [Math.max(x1, x2), Math.max(y1, y2)];
+
     return {
       id,
-      x1, y1, x2, y2,
-      data: JSON.stringify(data),
+      x1: _x1, y1: _y1, x2: _x2, y2: _y2,
+      width: _x2 - _x1,
+      height: _y2 - _y1,
+      data,
       type
     }
   }
@@ -158,7 +164,7 @@ Rect.parse = (json) => {
     data = {}, 
     type = window.p2pAppEdit.LINK
   } = json
-  return new Rect({id, x1, x2, y1, y2, selected, data: JSON.parse(data || {}), type})
+  return new Rect({id, x1, x2, y1, y2, selected, data, type})
 }
 
 Rect.MIN_AREA = 1000
