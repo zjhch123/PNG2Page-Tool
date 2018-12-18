@@ -1,4 +1,4 @@
-const getImageData = (file) => {
+const getImageFileData = (file) => {
   return new Promise((resolve) => {
     const reader = new FileReader()
     reader.onload = function(e) {
@@ -90,7 +90,7 @@ const getFormData = (formDOM) => {
 const getRandomId = () => Math.random().toString(36).substring(2)
 
 export default {
-  getImageData,
+  getImageFileData,
   throttle,
   delay,
   clearCanvas,

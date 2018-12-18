@@ -69,28 +69,6 @@ class Rect {
     }
   }
 
-  resetPosition({x, y, width, height}) {
-    this.x1 = Math.ceil(x)
-    this.y1 = Math.ceil(y)
-    this.x2 = x + width
-    this.y2 = y + height
-    this.width = width
-    this.height = height
-    this.area = Math.abs(this.width * this.height)
-  }
-
-  setData(data) {
-    this.data = data
-  }
-
-  getData() {
-    return this.data
-  }
-
-  delData() {
-    this.data = null
-  }
-
   calcFontSize() {
     const width = Math.abs(this.width)
     const height = Math.abs(this.height)
@@ -135,21 +113,20 @@ class Rect {
   }
 
   toJSON() {
-    let {
+    const {
       id,
       x1, y1, x2, y2,
       data,
       type
     } = this
 
-    let [_x1, _y1] = [Math.min(x1, x2), Math.min(y1, y2)];
-    let [_x2, _y2] = [Math.max(x1, x2), Math.max(y1, y2)];
+    const [_x1, _y1] = [Math.min(x1, x2), Math.min(y1, y2)];
+    const [_x2, _y2] = [Math.max(x1, x2), Math.max(y1, y2)];
 
     return {
       id,
       x1: _x1, y1: _y1, x2: _x2, y2: _y2,
-      width: _x2 - _x1,
-      height: _y2 - _y1,
+      ...this.getSize(),
       data,
       type
     }

@@ -22,11 +22,7 @@ class App extends Component {
 
   componentDidMount() {
     if (local.hasHistory()) {
-      this.setIsLoading()
-      const data = local.getImage()
-      this.setState({
-        info: data.imageInfo
-      })
+      this.loadHistory()
     }
   }
 
@@ -45,7 +41,7 @@ class App extends Component {
     this.setIsLoading()
     const {
       width, height, image
-    } = await utils.getImageData(file)
+    } = await utils.getImageFileData(file)
     try {
       local.saveImage({ image: image.src, width, height })
     } catch (e) {
@@ -56,6 +52,14 @@ class App extends Component {
       info: {
         width, height, image: image.src
       }
+    })
+  }
+
+  loadHistory = () => {
+    this.setIsLoading()
+    const data = local.getImage()
+    this.setState({
+      info: data.imageInfo
     })
   }
 
