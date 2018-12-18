@@ -1,6 +1,7 @@
 {
   "name": "p2p",
   "version": "0.1.0",
+  "homepage": "https://static.hduzplus.xyz/p2p",
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.0",
@@ -60,6 +61,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "deploy": "sh scripts/deploy.sh",
     "build": "node scripts/build.js"
   },
   "eslintConfig": {
