@@ -44,18 +44,21 @@ export default {
   async toHTML(b64, data) {
     const images = await b64ToImgs(b64)
 
-    const htmlStr = window.template.render(html, { imageSize: images.length, data: data })
-    
-    const zip = new JSZip()
-    zip.file("index.html", htmlStr)
+    return new Promise(resolve => {
+      const htmlStr = window.template.render(html, { imageSize: images.length, data: data })
+      
+      const zip = new JSZip()
+      zip.file("index.html", htmlStr)
 
-    images.forEach((image, index) => {
-      zip.file(`image${index}.jpg`, dataURLTob64(image), {base64: true})
+      images.forEach((image, index) => {
+        zip.file(`image${index}.jpg`, dataURLTob64(image), {base64: true})
+      })
+
+      zip.generateAsync({type: 'blob'})
+        .then(content => {
+          saveAs(content)
+          resolve()
+        })
     })
-
-    zip.generateAsync({type: 'blob'})
-       .then(content => {
-         saveAs(content)
-       })
   }
 }

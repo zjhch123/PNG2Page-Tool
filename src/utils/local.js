@@ -6,15 +6,11 @@ const hasHistory = () => {
 }
 
 const getData = () => {
-  return {
-    data: storage.get("data", true).map(json => Rect.parse(json))
-  }
+  return storage.get("data", true).map(json => Rect.parse(json))
 }
 
 const getImage = () => {
-  return {
-    imageInfo: storage.get("imageInfo", true)
-  }
+  return storage.get("imageInfo", true)
 }
 
 const saveData = (data = []) => {

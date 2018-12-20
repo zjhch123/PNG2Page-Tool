@@ -1,8 +1,17 @@
 import React from 'react';
-import { Button, Popconfirm } from 'antd'
-import style from './index.module.scss';
+import { Button, Popconfirm, message } from 'antd'
+import style from './index.module.scss'
+import local from '@utils/local'
 
-export default ({ clearHistory }) => (
+const clearHistory = () => {
+  local.clearHistory()
+  message.success('清除成功！')
+  setTimeout(() => {
+    window.location.reload()
+  }, 500)
+}
+
+export default () => (
   <header className={style.cHeader}>
     <span>{window.p2pAppConfig.title}</span>
     <div className={style.mBtns}>

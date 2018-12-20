@@ -16,7 +16,6 @@ class App extends Component {
     super()
     this.state = {
       info: null,
-      isLoading: false
     }
   }
 
@@ -26,58 +25,37 @@ class App extends Component {
     }
   }
 
-  setIsLoading = (timestamp = 1500) => {
-    this.setState({
-      isLoading: true
-    })
-    setTimeout(() => {
-      this.setState({
-        isLoading: false
-      })
-    }, timestamp)
-  }
-
   uploadHandler = async (file) => {
-    this.setIsLoading()
+    Loading.start('正在加载')
     const {
       width, height, image
     } = await utils.getImageFileData(file)
+    Loading.stop()
     try {
-      local.saveImage({ image: image.src, width, height })
+      local.saveImage({ image: image, width, height })
     } catch (e) {
-      message.error('图片过大, 请重新上传')
+      message.error('图片过大, 请压缩后重新上传')
+      console.error(e)
       return
     }
     this.setState({
       info: {
-        width, height, image: image.src
+        width, height, image: image
       }
     })
   }
 
   loadHistory = () => {
-    this.setIsLoading()
-    const data = local.getImage()
+    Loading.start('正在加载', 1500)
     this.setState({
-      info: data.imageInfo
+      info: local.getImage()
     })
   }
-
-  clearHistory = () => {
-    local.clearHistory()
-    message.success('清除成功！')
-    setTimeout(() => {
-      window.location.reload()
-    }, 500)
-  }
-
-  renderLoading = () => this.state.isLoading ? <Loading text="正在处理图像"/> : ''
 
   render() {
     return (
       <div className="app">
-      { this.renderLoading() }
-        <Header clearHistory={this.clearHistory}/>
+        <Header/>
         <Container className="app-container" padding="8px">
           {
             !this.state.info

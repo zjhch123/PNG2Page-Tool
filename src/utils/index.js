@@ -5,16 +5,30 @@ const getImageFileData = (file) => {
       const data = e.target.result
       const image = new Image()
       image.onload = function() {
-        resolve({
-          width: image.width,
-          height: image.height,
-          image
-        })
+        resolve(scaleImage(image, 1920))
       }
       image.src = data
     }
     reader.readAsDataURL(file)
   })
+}
+
+const scaleImage = (image, targetWidth) => {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  const width = image.width
+  const height = image.height
+  const scaledWidth = targetWidth
+  const scaledHeight = scaledWidth / width * height
+  canvas.width = scaledWidth
+  canvas.height = scaledHeight
+  ctx.drawImage(image, 0, 0, scaledWidth, scaledHeight)
+  const b64 = canvas.toDataURL('image/jpeg')
+  return {
+    image: b64,
+    width: scaledWidth,
+    height: scaledHeight
+  }
 }
 
 const throttle = (func, wait, options) => {

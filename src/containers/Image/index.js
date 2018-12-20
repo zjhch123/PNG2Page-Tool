@@ -2,6 +2,7 @@ import React from 'react'
 import style from './index.module.scss'
 import utils from '@utils/index'
 import Rect from '@models/Rect'
+import Loading from '@components/Loading'
 import Aside from '@containers/Aside'
 import local from '@utils/local'
 import transfer from '@utils/transfer'
@@ -18,7 +19,7 @@ export default class Image extends React.Component {
       y: 0
     }
 
-    this.result = local.getData().data
+    this.result = local.getData()
 
     this.calcScale = utils.throttle(this.calcScale, 200)
     this.state = {
@@ -30,11 +31,11 @@ export default class Image extends React.Component {
     this.ctx = this.canvas.getContext('2d')
 
     const {
-      width, height, image
+      height, image
     } = this.props.info
 
     this.setState({ image })
-    this.canvas.height = this.canvas.width / width * height
+    this.canvas.height = height
 
     this.drawPrev()
     window.addEventListener('resize', this.calcScale)
@@ -168,8 +169,10 @@ export default class Image extends React.Component {
     this.drawPrev()
   }
 
-  handlerAsideExport = () => {
-    transfer.toHTML(this.state.image, this.result.map(r => r.toJSON()))
+  handlerAsideExport = async () => {
+    Loading.start('正在导出')
+    await transfer.toHTML(this.state.image, this.result.map(r => r.toJSON()))
+    Loading.stop()
   }
 
   render() {
